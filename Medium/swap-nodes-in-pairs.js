@@ -11,43 +11,64 @@
  * @return {ListNode}
  */
 var swapPairs = function (head) {
-  var newHead;
-
-  printList(head);
-
-  var first = head;
-  var second = first.next;
-  var third;
-  var temp;
-
-  if (second.val) {
-    newHead = second;
+  var pointer = head;
+  var evenPointers = [];
+  var oddPointers = [];
+  var index = 0;
+  var resultPointer = head;
+  var count = 0;
+  var tempIteratingPointer;
+  var diffLengthConditionFixingPointer;
+  while (pointer) {
+    if (pointer) {
+      index += 1;
+      if (index % 2 === 0) {
+        evenPointers.push(pointer);
+      } else {
+        oddPointers.push(pointer);
+      }
+    }
+    pointer = pointer.next;
+    if (index % 2 === 0) {
+      evenPointers[evenPointers.length - 1].next = null;
+    } else {
+      oddPointers[oddPointers.length - 1].next = null;
+    }
   }
 
-  while (second) {
-    console.log("first", first);
-    console.log("second", second);
-    third = second.next;
-    temp = second;
-    temp.next = first;
-    first.next = third;
-
-    console.log("third", third);
-
-    first = second.next;
-    second = first.next;
-
-    // printList(newHead);
+  if (!evenPointers.length) {
+    return resultPointer;
   }
-  printList(newHead);
-};
 
-const printList = (head) => {
-  var ptr = head;
-  var str = "";
-  while (ptr) {
-    str += ptr.val + " -> ";
-    ptr = ptr.next;
+  if (oddPointers.length || evenPointers.length) {
+    resultPointer = evenPointers.shift();
+    count += 1;
+    tempIteratingPointer = resultPointer;
+
+    while (count < index) {
+      if (count % 2 === 0) {
+        pointer = evenPointers.shift();
+      } else {
+        pointer = oddPointers.shift();
+      }
+      tempIteratingPointer.next = pointer === undefined ? null : pointer;
+      diffLengthConditionFixingPointer = tempIteratingPointer;
+      tempIteratingPointer = tempIteratingPointer.next;
+      count += 1;
+    }
+
+    if (oddPointers.length) {
+      pointer = oddPointers.shift();
+      diffLengthConditionFixingPointer.next =
+        pointer === undefined ? null : pointer;
+      diffLengthConditionFixingPointer = diffLengthConditionFixingPointer.next;
+    }
+    if (evenPointers.length) {
+      pointer = evenPointers.shift();
+      diffLengthConditionFixingPointer.next =
+        pointer === undefined ? null : pointer;
+      diffLengthConditionFixingPointer = diffLengthConditionFixingPointer.next;
+    }
   }
-  console.log(str);
+  return resultPointer;
 };
