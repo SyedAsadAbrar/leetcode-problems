@@ -10,13 +10,14 @@ var isPalindrome = function (x) {
   if (x < 0) {
     return false;
   }
+  if (x < 10) {
+    return true;
+  }
   var num = x;
-  const reverseNum = 0;
+  var reverseNum = 0;
   var temp = 0;
-  var forward = 0;
-  var backward = 0;
   while (num > 0) {
-    temp = (((num / 10).toFixed(1) - (num / 10).toFixed(0)) * 10).toFixed(0);
+    temp = parseInt(((num / 10 - ~~(num / 10)) * 10).toFixed(0));
     reverseNum = reverseNum * 10 + temp;
     num = parseInt(num / 10);
   }
