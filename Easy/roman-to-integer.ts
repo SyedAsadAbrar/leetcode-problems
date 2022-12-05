@@ -1,4 +1,4 @@
-const mapping = {
+const mapping: { [key: string]: number } = {
   I: 1,
   V: 5,
   X: 10,
@@ -9,42 +9,26 @@ const mapping = {
 };
 
 const romanToInt = (s: string): number => {
-  let carry = 0;
   let result = 0;
-  const convertedString = s.split('').map((letter) => mapping[letter]);
+  const convertedString = s.split("").map((letter) => mapping[letter]);
 
-  convertedString.forEach((number) => {
-    console.log('number', number);
-    if ([mapping.I, mapping.X, mapping.C].includes(number) && !carry) {
-      console.log('no carry and special num found');
-      carry = number;
+  let index = 0;
+  let first: number;
+  let second: number;
+
+  console.log(convertedString);
+
+  while (index <= convertedString.length - 2) {
+    first = convertedString[index];
+    second = convertedString[index + 1];
+    if (first >= second) {
+      result += first;
     } else {
-      console.log('else', carry);
-      if (!carry) {
-        result += number;
-      } else {
-        console.log('in case of add', carry + number, result);
-        console.log('subtraction case', -carry + number, result);
-        if (carry === mapping.I) {
-          result += [mapping.V, mapping.X].includes(number)
-            ? -carry + number
-            : carry + number;
-        } else if (carry === mapping.X) {
-          result += [mapping.L, mapping.C].includes(number)
-            ? -carry + number
-            : carry + number;
-        } else if (carry === mapping.C) {
-          result += [mapping.D, mapping.M].includes(number)
-            ? -carry + number
-            : carry + number;
-        } else {
-          result += carry + number;
-        }
-        carry = 0;
-      }
+      result += second - first;
+      index += 1;
     }
+    index += 1;
+  }
 
-    console.log('result', result);
-  });
-  return result + carry;
+  return result + (convertedString[index] || 0);
 };
