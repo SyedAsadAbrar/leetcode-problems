@@ -1,8 +1,6 @@
 // https://leetcode.com/problems/evaluate-reverse-polish-notation/
 
 function evalRPN(tokens: string[]): number {
-  console.log("evalRPN", tokens);
-
   const VALID_OPERATORS = ["+", "-", "*", "/"];
   const stack: number[] = [];
 
